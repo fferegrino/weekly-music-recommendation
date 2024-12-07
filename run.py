@@ -37,7 +37,7 @@ selected_track = sorted_tracks[0]
 if selected_track[1] < TRACK_CUTOFF:
     print("No new tracks to share")
 
-    if random.random() < CHANCE_OF_SHARE_OLD_TRACK:
+    if random.random() > CHANCE_OF_SHARE_OLD_TRACK:
         print("Picking one at random")
         selected_track = random.choice(sorted_tracks)
     else:
@@ -94,7 +94,7 @@ main = models.AppBskyEmbedExternal.Main(
 
 tb = client_utils.TextBuilder()
 
-tb.tag("Recomendación musical", "RecomendaciónMusical")
+tb.tag("Recomendación musical", TAG)
 tb.text(": ")
 tb.link(track_name, track_url)
 tb.text(f' por {", ".join(artist_names)}\n')
