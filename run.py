@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 import requests
 from atproto import client_utils, models
 from atproto_client import models
-from atproto_client.models.blob_ref import BlobRef
 
 from bluesky import Bluesky
 from metadata_parser import MetadataParser
@@ -79,16 +78,14 @@ if time_since_last_post > timedelta(days=DAYS_SINCE_LAST_POST):
     exit()
 
 parser = MetadataParser(track_url)
-_ = parser.parse_metadata_and_og_tags()
+parser.parse_metadata_and_og_tags()
+image_data, image_content_type = parser.get_image()
 
+image_blob = bsky.client.upload_blob(image_data)
 
 main = models.AppBskyEmbedExternal.Main(
     external=models.AppBskyEmbedExternal.External(
-        description=parser.description,
-        title=parser.title,
-        image=parser.image,
-        uri=track_url,
-        # thumb=image_blob
+        description=parser.description, title=parser.title, image=parser.image_url, uri=track_url, thumb=image_blob.blob
     )
 )
 

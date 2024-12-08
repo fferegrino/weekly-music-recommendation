@@ -44,5 +44,10 @@ class MetadataParser:
         return self.get_attributes("og:description", "description", "twitter:description")
 
     @property
-    def image(self):
+    def image_url(self):
         return self.get_attributes("og:image", "twitter:image")
+
+    def get_image(self):
+        response = requests.get(self.image_url)
+        response.raise_for_status()
+        return response.content, response.headers.get("Content-Type")
